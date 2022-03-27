@@ -1,0 +1,78 @@
+" Vim syntax file
+" Language: Paradox Interactive EU4
+" Maintainer: Rasmus Svenson
+" Latest Revision: 27 March 2022
+
+if exists("b:current_syntax")
+	finish
+endif
+
+" Statement Regions
+syn	region		pdxeu4Block		start="\v\{" end="\v\}" contains=ALL transparent fold
+syn	region		pdxeu4OneBlock		start="\v\=(\s\{)@!" end="\v\n" contains=ALL transparent oneline
+
+" Statement Types
+syn	keyword		pdxeu4Statement		break hidden_effect immediate contained
+syn	keyword		pdxeu4Conditional	if else_if else trigger_switch or trigger_if NOT OR NOR AND NAND
+syn	keyword		pdxeu4Loop		while contained
+syn	match		pdxeu4Boolean		"\v(\s\=\s)@=(yes)|(no)" contained
+
+"" Effect Calls
+" Dual Scope
+syn	keyword		pdxeu4DualFlags		set_global_flag clr_global_flag nextgroup=pdxeu4String skipempty contained
+syn	keyword		pdxeu4DualString	log save_event_target_as save_global_event_target_as clear_global_event_target show_ambient_object hide_ambient_object nextgroup=pdxeu4String skipempty contained
+syn	keyword		pdxeu4DualBool		clear_global_event_targets enable_council finish_council nextgroup=pdxeu4Boolean skipempty contained
+
+" Events
+syn	keyword		pdxeu4EventCalls	country_event province_event nextgroup=pdxeu4EventContents,pdxeu4Statement skipempty
+syn	keyword		pdxeu4EventContents	id days title picture desc is_triggered_only random tooltip contained
+
+" Variables
+syn	keyword		pdxeu4StringVars	name attitude custom_tooltip desc key type religion scope trade_goods trigger investment investor incident group school personality government government_mechanic who which subject_type which subject friend leader leader_dynasty casus_belli war_goal_province estate influence loyalty building contained nextgroup=pdxeu4String
+syn	keyword		pdxeu4IntVars		age min_age influence factor max_age max_random_dip max_random_mil max_random_adm duration value power interest_modifier years rank amount opinion skill location cost_multiplier tradition add_fire add_shock factor add_maneuver add_siege fire shock maneuver speed cost siege months share adm claim dip heavy_ship light_ship transport unrest mil contained nextgroup=pdxeu4Integer
+syn	keyword		pdxeu4BoolVars		hidden AI ai locked allow_new_heir hide_skills regency fixed_interest fixed female mercenary discount mutual win instant contained nextgroup=pdxeu4Boolean
+syn	cluster		pdxeu4Vars		contains=pdxeu4StringVars,pdxeu4BoolVars,pdxeu4IntVars
+
+" Functions
+syn	keyword		pdxeu4VarEffects	ai_chance modifier estate_influence limit option add_country_modifier add_loan set_saved_name add_favors add_opinion spawn_Rebels reverse_add_opinion remove_opinion reverse_remove_opinion set_government_and_rank add_disaster_modifier declare_war_with_cb remove_trade_modifier add_trade_company_investment add_disaster_progress set_incident_variable_value create_subject build_to_forcelimit remove_loot set_religious_school add_casus_belli reverse_add_casus_belli define_explorer define_conquistador define_general change_price set_ai_attitude create_general define_admiral add_years_of_owned_provinces_production_income add_unit_construction add_estate_loyalty_modifier create_flagship add_faction_influence change_estate_land_share add_ruler_modifier regency add_trade_modifier kill_heir define_ruler define_ruler_to_general kill_units define_leader_to_ruler add_spy_network_from add_spy_network_in add_government_power create_admiral add_institution_embracement set_school_opinion define_heir_to_general define_heir define_advisor add_trust define_consort add_estate_influence_modifier set_ai_personality add_estate_loyalty add_province_modifier add_core_construction add_permanent_province_modifier extend_province_modifier add_culture_construction add_building_construction nextgroup=@pdxeu4Vars
+syn	keyword		pdxeu4StringEffects	remove_country_modifier add_government_reform disband_rebels remove_government_reform break_marriage break_union inherit release discover_country undiscover_country add_claim add_to_trade_company add_core set_country_flag add_idea declare_war end_disaster add_reform_center remove_reform_center create_advisor change_culture remove_estate_privilege set_estate_privilege start_estate_agenda remove_ruler_personality join_league leave_league set_ruler_flag clr_ruler_flag set_dynasty set_ruler_culture add_permanent_claim add_territorial_core cede_province change_controller remove_claim remove_core remove_territorial_core streltsy_infantry cossack_cavalry rajput_infantry marine_infantry set_ruler_religion exile_ruler_as set_ruler attach_leader set_hre_religion recall_merchant set_hre_heretic_religion add_ruler_personality create_alliance create_guarantee create_marriage create_union create_vassal create_marc vassalize add_idea_group add_active_policy change_technology_group change_unit_type kill_leader artillery cavalry infantry mercenary_infantry mercenary_cavalry add_queen_personality remove_queen_personality set_consort_flag clr_consort_flag set_consort_culture set_consort_religion heavy_ship remove_idea remove_idea_group add_truce_with add_faction remove_faction white_peace form_coalition_against join_all_offensive_wars_of remove_province_modifier add_province_triggered_modifier remove_province_triggered_modifier set_province_flag clr_province_flag change_province_name rename_capital add_heir_personality remove_heir_personality set_heir_flag clr_heir_flag join_all_defensive_wars_of add_great_project create_independent_estate create_independent_estate_from_religion destroy_great_project light_ship galley transport add_building remove_building add_historical_friend add_historical_rival set_revolution_target_as remove_historical_friend remove_historical_rival add_accepted_culture change_personal_deity kill_advisor remove_advisor remove_advisor_by_category add_harmonized_religion elector revoke_reform unlock_cult set_heir_culture set_heir_religion exile_heir_as set_heir change_cult change_primary_culture create_advisor remove_accepted_culture change_religion add_incident_variable_value enabled_religion clr_country_flag change_tag add_church_aspect remove_church_aspect switch_tag change_graphical_culture complete_mission excommunicate override_country_name clear_saved_name adopt_reform_progress change_trade_goods change_government nextgroup=pdxeu4String
+syn	keyword		pdxeu4BoolEffects	restore_country_name raise_war_taxes dissolve_parliament collapse_nation reinstante_parliament male swap_non_generic_missions release_all_subjects grant_independence force_converted set_papacy_active set_seat_in_parliament back_current_issue set_primitive swap_free_idea_group change_to_secondary_religion send_missionary add_cardinal remove_cardinal clear_scripted_personalities kill_ruler set_in_empire hre_inheritable imperial_ban_allowed internal_hre_cb set_allow_female_emperor dismantle_hre enable_hre_leagues convert_female_ruler_to_general convert_ruler_to_general change_consort_regent_to_ruler set_hre_religion_locked set_hre_religion_treaty remove_consort dismantle_empire_of_china set_emperor_of_china cancel_construction remove_heir convert_female_heir_to_general convert_heir_to_general nextgroup=pdxeu4Boolean
+syn	keyword		pdxeu4IntEffects	create_colony add_colonysize multiple_colonysize add_siberian_construction change_native_ferocity change_native_hostileness change_natve_size add_imperial_influence add_scaled_imperial_influence add_stability add_war_exhaustion add_mandate set_mandate add_libery_desire add_adm_power add_absolutism change_siege add_dip_power add_mil_power adm_power_cost add_army_tradition create_explorer create_conquistador add_navy_tradition add_army_professionalism add_manpower add_sailors add_yearly_manpower change_adm change_dip change_mil remove_fow add_yearly_sailors add_patriarch_authority add_harmony add_heir_claim add_heir_support add_scaled_local_adm_power center_of_trade add_center_of_trade_level add_scaled_local_dip_power add_scaled_local_mil_power change_government_reform_progress add_legitimacy add_authority add_next_institution_embracement add_adm_tech add_dip_tech add_mil_tech add_prestige add_corruption set_capital add_splendor add_piety add_harmonization_progress add_isolationism set_isolationism add_curia_treasury add_doom remove_religious_reforms add_fervor add_karma set_karma add_church_power add_republican_tradition add_scaled_republican_tradition add_papal_influence add_reform_desire add_devotion add_horde_unity add_meritocracy change_statistsvs_monarchists add_trade_node_income set_government_rank set_meritocracy add_militarised_society add_revolutionary_zeal add_tribal_allegiance change_statists_vs_orangists dip_power_cost mil_power_cost add_years_of_income add_treasury add_inflation add_mercantilism add_tariff_value add_nationalism add_unrest create_native create_pirate create_revolt loan_size change_innovativeness add_construction_progress change_heir_adm change_heir_dip change_heir_mil add_base_tax add_base_production add_base_manpower add_prosperity add_devastation set_base_tax set_base_production set_base_manpower add_local_autonomy set_local_autonomy nextgroup=pdxeu4Integer
+
+" Triggers
+syn	keyword		pdxeu4BaseScopes	ROOT FROM PREV THIS owner controller overlord caital emperor
+syn	match		pdxeu4BaseScopes	"\vevent_target\:"
+syn	keyword		pdxeu4Advisors		artist inquisitor master_of_mint natural_scientist philosopher theologian treasurer colonial_governor diplomat naval_reformer navigator spymaster statesman trader army_organizer army_reformer commandant grand_captain master_recruiter military_engineer quartermaster nextgroup=pdxeu4Integer
+
+" Comments
+syn	region		pdxeu4Comment		start="#" end="\n" containedin=ALL
+
+" Strings
+syn	match		pdxeu4String		"\v(\s\=\s)@<=(\{)@!.+\n" contained
+syn	match		pdxeu4Integer		"\v(\s\=\s)@<=-?\d+\.\d+" contained
+syn	match		pdxeu4Integer		"\v(\s\=\s)@<=-?\d+" contained
+
+
+let b:current_syntax = "eu4"
+
+hi def link pdxeu4Comment		Comment
+hi def link pdxeu4String		String
+hi def link pdxeu4Statement		Statement
+hi def link pdxeu4Conditional		Conditional
+hi def link pdxeu4Loop			Repeat
+hi def link pdxeu4Boolean		Boolean
+hi def link pdxeu4VarEffects		Function
+hi def link pdxeu4StringEffects		Function
+hi def link pdxeu4BoolEffects		Function
+hi def link pdxeu4IntEffects		Function
+hi def link pdxeu4Integer		Float
+hi def link pdxeu4StringVars		Identifier
+hi def link pdxeu4BoolVars		Identifier
+hi def link pdxeu4IntVars		Identifier
+hi def link pdxeu4EventCalls		Function
+hi def link pdxeu4EventContents		Identifier
+hi def link pdxeu4DualFlags		Function
+hi def link pdxeu4DualBool		Function
+hi def link pdxeu4DualString		Function
+hi def link pdxeu4BaseScopes		Constant
+hi def link pdxeu4Advisors		Operator
